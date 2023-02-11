@@ -1,5 +1,7 @@
-import { generateUUID } from "./uuid";
 import dotenv from "dotenv";
+import { generateUUID } from "./uuid";
+import { ChatGPTResponse } from "./chatgpt";
+
 dotenv.config();
 
 export async function sendPostRequest(

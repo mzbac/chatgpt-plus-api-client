@@ -1,4 +1,4 @@
-type Message = {
+type ChatGPTMessage = {
   id: string;
   role: string;
   user: null | any;
@@ -21,8 +21,8 @@ type Message = {
   recipient: string;
 };
 
-type ChatGPTResponse = {
-  message: Message;
+export type ChatGPTResponse = {
+  message: ChatGPTMessage;
   conversation_id: string;
   error: null | any;
 };
