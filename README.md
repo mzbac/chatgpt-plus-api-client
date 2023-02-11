@@ -11,7 +11,7 @@ This is a Node.js Open Source project for making API calls to ChatGPT. The proje
 To install the project, run the following command in your terminal:
 
 ```bash
-npm install
+npm install chatgpt-plus-api-client
 ```
 
 ## Usage
