@@ -1,8 +1,8 @@
 import * as core from "@actions/core";
 import { Octokit } from "@octokit/action";
 import { sendPostRequest } from "../src";
-import { addCommentToPR, getRawFileContent } from "./client";
-import { addLineNumbers, extractCommitHash } from "./utils";
+import { getRawFileContent, postCommentToPR } from "./client";
+import { addLineNumbers } from "./utils";
 
 const octokit = new Octokit();
 const extensions = ["ts", "tsx"];
@@ -30,13 +30,11 @@ async function run(): Promise<void> {
                         \`\`\``,
         });
 
-        await addCommentToPR(
+        await postCommentToPR(
           owner,
           repo,
           pullNumber,
-          file.filename,
           response.message.content.parts[0],
-          extractCommitHash(file.raw_url)!,
           octokit
         );
       }
