@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { generateUUID } from "./uuid";
 import { ChatGPTResponse } from "./chatgpt";
 
-dotenv.config();
+// dotenv.config();
 
 const API_ENDPOINT = "https://chat.openai.com/backend-api/conversation";
 const MODEL = "text-davinci-002-render-paid";
