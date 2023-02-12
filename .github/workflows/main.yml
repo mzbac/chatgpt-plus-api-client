@@ -22,4 +22,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_NUMBER: ${{ github.event.pull_request.number }}
           CHATGPT_COOKIES: ${{ secrets.CHATGPT_COOKIES }}
-          CHATGPT_AUTH_TOEKN: ${{ secrets.CHATGPT_AUTH_TOEKN }}
+          CHATGPT_AUTH_TOKEN: ${{ secrets.CHATGPT_AUTH_TOKEN }}
