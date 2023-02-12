@@ -7,8 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Let chatgpt comment on your PR.
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: ChatGPT comment
-        uses: mzbac/codeguard-gpt-action@0.0.2
+        uses: mzbac/codeguard-gpt-action@0.0.1
         with:
           number: ${{ github.event.pull_request.number }}
         env:
