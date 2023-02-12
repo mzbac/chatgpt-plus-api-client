@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import { generateUUID } from "./uuid";
 import { ChatGPTResponse } from "./chatgpt";
 
@@ -9,11 +9,11 @@ const MODEL = "text-davinci-002-render-paid";
 const HEADERS = {
   "Content-Type": "application/json",
   Accept: "text/event-stream",
-  cookie: process.env.CHATGPT_COOKIES ?? "",
-  Authorization: process.env.CHATGPT_AUTH_TOEKN ?? "",
+  cookie: process.env.CHATGPT_COOKIES || "",
+  Authorization: process.env.CHATGPT_AUTH_TOEKN || "",
 };
 
-type SendPostRequestOptions = {
+interface SendPostRequestOptions {
   parentMessageId?: string;
   conversationId?: string;
   prompt?: string;
@@ -72,9 +72,13 @@ export async function sendPostRequest(
 
     const finalChunk = chunks[chunks.length - 2];
     const jsonString = finalChunk.replace(/^data:/, '');
-    return JSON.parse(jsonString);
+    try {
+      return JSON.parse(jsonString);
+    } catch (error) {
+      console.error("Error parsing response from ChatGPT API:", error);
+      throw error;
+    }
   } catch (error) {
-    console.error("Error sending POST request to ChatGPT API:", error);
-    throw error;
+    throw new Error(`Error sending POST request to ChatGPT API: ${error}`);
   }
 }
