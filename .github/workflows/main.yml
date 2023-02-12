@@ -1,0 +1,17 @@
+on: [pull_request]
+
+name: CodeGuard
+
+jobs:
+  chatgpt_comment:
+    runs-on: ubuntu-latest
+    name: Let chatgpt comment on your PR.
+    steps:
+      - name: ChatGPT comment
+        uses: mzbac/codeguard-gpt-action@0.0.1
+        with:
+          number: ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHATGPT_COOKIES: ${{ secrets.CHATGPT_COOKIES }}
+          CHATGPT_AUTH_TOKEN: ${{ secrets.CHATGPT_AUTH_TOKEN }}
