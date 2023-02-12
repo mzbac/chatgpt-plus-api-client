@@ -71,6 +71,7 @@ export async function sendPostRequest(
     }
 
     const finalChunk = chunks[chunks.length - 2];
+    console.log(finalChunk);
     const jsonString = finalChunk.replace(/^data:/, '');
     return JSON.parse(jsonString);
   } catch (error) {
