@@ -5,11 +5,11 @@ import {addCommentToPR, getRawFileContent} from './client'
 import {addLineNumbers, extractCommitHash} from './utils'
 
 const octokit = new Octokit()
+const extensions = ['ts,tsx'];
 
 async function run(): Promise<void> {
   try {
-    const extensions = core.getInput('extensions').split(',')
-    const pullNumber = parseInt(core.getInput('number'))
+    const pullNumber = parseInt(process.env.PULL_NUMBER!)
 
     const [owner, repo] = process.env.GITHUB_REPOSITORY!.split('/')
 
