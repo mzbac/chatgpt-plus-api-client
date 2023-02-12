@@ -20,12 +20,25 @@ To make API calls to ChatGPT in TypeScript, use the following code in your proje
 
 ```typescript
 import { sendPostRequest } from "chatgpt-plus-api-client";
-import { generateUUID } from "chatgpt-plus-api-client/dist/uuid";
 
-sendPostRequest(generateUUID(), "Hello, how are you?").then((response) => {
+async function talk() {
+  let conversationId, parentMessageId;
+
+  let response = await sendPostRequest("for loop in js?");
+  parentMessageId = response.message.id;
+  conversationId = response.conversation_id;
   console.log(response.message.content.parts[0]);
-});
 
+  response = await sendPostRequest(
+    "rewrite it in typescript",
+    parentMessageId,
+    conversationId
+  );
+  parentMessageId = response.message.id;
+  console.log(response.message.content.parts[0]);
+}
+
+talk();
 ```
 
 Before using the API client, you must set the CHATGPT_COOKIES and CHATGPT_AUTH_TOKEN environment variables. These values can be obtained by manually copying the cookies and authentication token from your browser requests.
