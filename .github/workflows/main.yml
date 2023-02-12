@@ -1,10 +1,5 @@
 on: [pull_request]
 
-env:
-  CHATGPT_COOKIES: '${{ secrets.CHATGPT_COOKIES }}'
-  CHATGPT_AUTH_TOKEN: '${{ secrets.CHATGPT_AUTH_TOEKN }}'
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,3 +21,5 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_NUMBER: ${{ github.event.pull_request.number }}
+          CHATGPT_COOKIES: ${{ secrets.CHATGPT_COOKIES }}
+          CHATGPT_AUTH_TOEKN: ${{ secrets.CHATGPT_AUTH_TOEKN }}
