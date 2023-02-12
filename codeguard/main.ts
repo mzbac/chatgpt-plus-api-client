@@ -5,7 +5,7 @@ import { addCommentToPR, getRawFileContent } from "./client";
 import { addLineNumbers, extractCommitHash } from "./utils";
 
 const octokit = new Octokit();
-const extensions = ["ts,tsx"];
+const extensions = ["ts", "tsx"];
 
 async function run(): Promise<void> {
   try {
@@ -18,7 +18,6 @@ async function run(): Promise<void> {
     );
 
     for (const file of files.data) {
-      console.log("checking file:" + file.filename);
       const extension = file.filename.split(".").pop();
 
       if (extensions.includes(extension)) {
