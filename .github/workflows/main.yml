@@ -1,5 +1,10 @@
 on: [pull_request]
 
+env:
+  CHATGPT_COOKIES: '${{ secrets.CHATGPT_COOKIES }}'
+  CHATGPT_AUTH_TOKEN: '${{ secrets.CHATGPT_AUTH_TOEKN }}'
+
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +25,5 @@ jobs:
       run: npx tsx ./codeguard/main.ts
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHATGPT_COOKIES: '${{ secrets.CHATGPT_COOKIES }}'
-          CHATGPT_AUTH_TOKEN: '${{ secrets.CHATGPT_AUTH_TOEKN }}'
+
           PULL_NUMBER: ${{ github.event.pull_request.number }}
