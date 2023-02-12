@@ -1,17 +1,14 @@
 on: [pull_request]
 
 name: CodeGuard
-
+env:
+  CHATGPT_COOKIES: ${{ secrets.CHATGPT_COOKIES }}
+  CHATGPT_AUTH_TOKEN: ${{ secrets.CHATGPT_TOKEN }} 
 jobs:
   chatgpt_comment:
     runs-on: ubuntu-latest
     name: Let chatgpt comment on your PR.
     steps:
-      - name: create env file
-        run: |
-          touch .env
-          echo CHATGPT_COOKIES=${{ secrets.CHATGPT_COOKIES }} >> .env
-          echo CHATGPT_AUTH_TOKEN=${{ secrets.CHATGPT_TOKEN }} >> .env
       - name: ChatGPT comment
         uses: mzbac/codeguard-gpt-action@0.0.5
         with:
