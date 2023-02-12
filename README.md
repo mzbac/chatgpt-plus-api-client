@@ -24,16 +24,18 @@ import { sendPostRequest } from "chatgpt-plus-api-client";
 async function talk() {
   let conversationId, parentMessageId;
 
-  let response = await sendPostRequest("for loop in js?");
+  let response = await sendPostRequest({
+    prompt: "for loop in js?",
+  });
   parentMessageId = response.message.id;
   conversationId = response.conversation_id;
   console.log(response.message.content.parts[0]);
 
-  response = await sendPostRequest(
-    "rewrite it in typescript",
+  response = await sendPostRequest({
+    prompt: "rewrite it in typescript",
     parentMessageId,
-    conversationId
-  );
+    conversationId,
+  });
   parentMessageId = response.message.id;
   console.log(response.message.content.parts[0]);
 }
