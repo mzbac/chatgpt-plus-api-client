@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { generateUUID } from "./uuid";
 import { ChatGPTResponse } from "./chatgpt";
 
-// dotenv.config();
+dotenv.config();
 
 const API_ENDPOINT = "https://chat.openai.com/backend-api/conversation";
 const MODEL = "text-davinci-002-render-paid";
@@ -32,7 +32,7 @@ export async function sendPostRequest(
     conversationId,
     prompt = "hello world",
   } = options;
-
+  console.log("cookie env :" + process.env.CHATGPT_COOKIES);
   try {
     const messageId = generateUUID();
 
@@ -70,7 +70,6 @@ export async function sendPostRequest(
     }
 
     const finalChunk = chunks[chunks.length - 2];
-    console.log(finalChunk);
     const jsonString = finalChunk.replace(/^data:/, "");
     return JSON.parse(jsonString);
   } catch (error) {
