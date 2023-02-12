@@ -70,8 +70,8 @@ export async function sendPostRequest(
     }
 
     const finalChunk = chunks[chunks.length - 2];
-
-    const jsonString = finalChunk.replace(/^data:/, '');
+    console.log(finalChunk);
+    const jsonString = finalChunk.replace(/^data:/, "");
     return JSON.parse(jsonString);
   } catch (error) {
     console.error("Error sending POST request to ChatGPT API:", error);
