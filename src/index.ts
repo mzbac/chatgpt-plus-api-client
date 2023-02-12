@@ -18,6 +18,12 @@ type SendPostRequestOptions = {
   conversationId?: string;
   prompt?: string;
 };
+
+const DEFAULT_OPTIONS: SendPostRequestOptions = {
+  parentMessageId: generateUUID(),
+  prompt: "hello world",
+};
+
 /**
  * Sends a POST request to the ChatGPT API with the given prompt and parent message ID.
  *
@@ -25,17 +31,15 @@ type SendPostRequestOptions = {
  * @returns A Promise that resolves to a ChatGPTResponse object.
  */
 export async function sendPostRequest(
-  options: SendPostRequestOptions = {}
+  options: SendPostRequestOptions = DEFAULT_OPTIONS
 ): Promise<ChatGPTResponse> {
-  const {
-    parentMessageId = generateUUID(),
-    conversationId,
-    prompt = "hello world",
-  } = options;
+  const { parentMessageId, conversationId, prompt } = {
+    ...DEFAULT_OPTIONS,
+    ...options,
+  };
 
   try {
     const messageId = generateUUID();
-
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: HEADERS,
