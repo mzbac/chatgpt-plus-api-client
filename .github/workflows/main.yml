@@ -14,4 +14,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHATGPT_COOKIES: ${{ secrets.CHATGPT_COOKIES }}
-          CHATGPT_AUTH_TOKEN: ${{ secrets.CHATGPT_AUTH_TOKEN }}
+          CHATGPT_AUTH_TOKEN: ${{ secrets.CHATGPT_TOKEN }}
