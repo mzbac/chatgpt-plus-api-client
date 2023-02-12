@@ -18,7 +18,7 @@ type SendPostRequestOptions = {
   conversationId?: string;
   prompt?: string;
 };
-
+console.log(process.env.CHATGPT_COOKIES)
 /**
  * Sends a POST request to the ChatGPT API with the given prompt and parent message ID.
  *
@@ -71,7 +71,6 @@ export async function sendPostRequest(
     }
 
     const finalChunk = chunks[chunks.length - 2];
-    console.log(chunks);
     const jsonString = finalChunk.replace(/^data:/, '');
     return JSON.parse(jsonString);
   } catch (error) {
