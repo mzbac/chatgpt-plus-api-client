@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import { generateUUID } from "./uuid";
 import { ChatGPTResponse } from "./chatgpt";
+import nodeFetch from "node-fetch";
 
 dotenv.config();
 
@@ -37,7 +38,7 @@ export async function sendPostRequest(
   try {
     const messageId = generateUUID();
 
-    const response = await fetch(API_ENDPOINT, {
+    const response = await nodeFetch(API_ENDPOINT, {
       method: "POST",
       headers: HEADERS,
       body: JSON.stringify({
@@ -58,18 +59,8 @@ export async function sendPostRequest(
       }),
     });
 
-    const reader = response.body!.getReader();
-    const decoder = new TextDecoder();
-    const chunks: string[] = [];
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        break;
-      }
-      const chunk = decoder.decode(value, { stream: true });
-      chunks.push(chunk);
-    }
-
+    const responseText = await response.text();
+    const chunks =responseText.split("\n").filter(s=>!!s)
     const finalChunk = chunks[chunks.length - 2];
     const jsonString = finalChunk.replace(/^data:/, '');
     try {

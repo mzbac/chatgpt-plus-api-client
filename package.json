@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-plus-api-client",
-  "version": "1.1.0",
+  "version": "1.0.10",
   "description": "Node.js Open Source project for making API calls to ChatGPT using TypeScript",
   "main": "dist/index.js",
   "files": [
@@ -9,14 +9,15 @@
     "README.md"
   ],
   "scripts": {
-    "prebuild":"rm -rf ./dist",
+    "prebuild": "rm -rf ./dist",
     "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "node-fetch": "^3.3.0"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",
