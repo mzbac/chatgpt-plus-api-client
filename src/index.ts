@@ -10,7 +10,7 @@ const HEADERS = {
   "Content-Type": "application/json",
   Accept: "text/event-stream",
   cookie: process.env.CHATGPT_COOKIES ?? "",
-  Authorization: process.env.CHATGPT_AUTH_TOEKN ?? "",
+  Authorization: process.env.CHATGPT_AUTH_TOKEN ?? "",
 };
 
 type SendPostRequestOptions = {
