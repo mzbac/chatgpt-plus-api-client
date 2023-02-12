@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-plus-api-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Node.js Open Source project for making API calls to ChatGPT using TypeScript",
   "main": "dist/index.js",
   "files": [
