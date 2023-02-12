@@ -9,7 +9,7 @@
     "README.md"
   ],
   "scripts": {
-    "prebuild":"rm -rf ./dist",
+    "prebuild": "rm -rf ./dist",
     "build": "tsc"
   },
   "keywords": [],
@@ -19,6 +19,8 @@
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
+    "@actions/core": "^1.10.0",
+    "@octokit/action": "^5.0.2",
     "@types/node": "^18.13.0",
     "typescript": "^4.9.5"
   }
