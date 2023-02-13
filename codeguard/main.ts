@@ -60,11 +60,12 @@ async function run(): Promise<void> {
                 repo,
                 pullNumber,
                 file.filename,
-                `
+`
+### Line ${line}
 ## CodeGuard Suggestions
 **Suggestion:** ${suggestions[line].suggestion}
 **Reason:** ${suggestions[line].reason}\n
-                `,
+`,
                 extractCommitHash(file.raw_url)!,
                 +line,
                 octokit
