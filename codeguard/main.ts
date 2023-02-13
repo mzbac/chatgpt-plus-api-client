@@ -51,7 +51,7 @@ async function run(): Promise<void> {
           const changedLines = getChangedLineNumbers(file.patch);
           for (const line in suggestions) {
             if (
-              changedLines.find(
+              changedLines.some(
                 ({ start, end }) => start <= Number(line) && Number(line) <= end
               )
             ) {
