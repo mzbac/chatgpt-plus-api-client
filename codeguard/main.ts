@@ -35,7 +35,11 @@ async function run(): Promise<void> {
           });
           const suggestions = JSON.parse(response.message.content.parts[0]);
           if (!isSuggestions(suggestions)) {
-            throw new Error("ChatGPT response is not of type Suggestions\n",suggestions);
+            throw new Error(
+              `ChatGPT response is not of type Suggestions\n${JSON.stringify(
+                suggestions
+              )}`
+            );
           }
           const changedLines = getChangedLineNumbers(file.patch);
           for (const line in suggestions) {
