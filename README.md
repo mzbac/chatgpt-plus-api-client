@@ -43,8 +43,6 @@ async function talk() {
 talk();
 ```
 
-Before using the API client, you must set the CHATGPT_COOKIES and CHATGPT_AUTH_TOKEN environment variables. These values can be obtained by manually copying the cookies and authentication token from your browser requests.
-
 By default, the API client uses the Default model. There are 2 available models to choose from:
 
 - `Default`
@@ -62,6 +60,34 @@ async function talk() {
 }
 talk();
 ```
+
+Before using the API client, you must set the CHATGPT_COOKIES and CHATGPT_AUTH_TOKEN environment variables. These values can be obtained by manually copying the cookies and authentication token from your browser requests.
+
+## Get Cookies and Authorization Headers using Browser Dev Tools
+
+Cookies and authorization headers can be accessed using the developer tools in your browser. Here's how you can do it in Google Chrome:
+
+### Getting Cookies
+
+1. Open the website you want to inspect in Google Chrome.
+2. Right-click on the page and select "Inspect".
+3. Click on the "Network" tab in the DevTools panel.
+4. Refresh the page to initiate a network request.
+5. Click on one of the requests in the list to inspect its details.
+6. In the right-side panel, scroll down to the "Headers" section.
+7. The "Cookie" header, if present, will be listed under "Request Headers".
+
+### Getting Authorization Headers
+
+1. Open the website you want to inspect in Google Chrome.
+2. Right-click on the page and select "Inspect".
+3. Click on the "Network" tab in the DevTools panel.
+4. Refresh the page to initiate a network request.
+5. Click on one of the requests in the list to inspect its details.
+6. In the right-side panel, scroll down to the "Headers" section.
+7. The "Authorization" header, if present, will be listed under "Request Headers".
+
+Note that the exact steps may vary slightly between different browsers, but the overall process should be similar.
 
 ## Contributing
 
