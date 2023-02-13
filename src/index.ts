@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { generateUUID } from "./uuid";
 import { ChatGPTResponse } from "./chatgpt";
+import { getModelId } from "./utils";
 
 dotenv.config();
 
@@ -9,11 +10,10 @@ const HEADERS = {
   "Content-Type": "application/json",
   Accept: "text/event-stream",
   cookie: process.env.CHATGPT_COOKIES ?? "",
-  Authorization: process.env.CHATGPT_AUTH_TOKEN ?? ""
+  Authorization: process.env.CHATGPT_AUTH_TOKEN ?? "",
 };
 
-type ModelOption = "Default" | "Turbo";
-type MODEL = "text-davinci-002-render-paid" | "text-davinci-002-render-sha";
+export type ModelOption = "Default" | "Turbo";
 
 type SendPostRequestOptions = {
   parentMessageId?: string;
@@ -22,10 +22,6 @@ type SendPostRequestOptions = {
   model?: ModelOption;
 };
 
-const MODEL_ID_MAP: { [key in ModelOption]: MODEL } = {
-  Default: "text-davinci-002-render-paid",
-  Turbo: "text-davinci-002-render-sha",
-};
 /**
  * Sends a POST request to the ChatGPT API with the given prompt and parent message ID.
  *
@@ -42,11 +38,7 @@ export async function sendPostRequest(
     model = "Default",
   } = options;
 
-  const modelId = MODEL_ID_MAP[model];
-
-  if (!modelId) {
-    throw new Error(`Invalid model option: ${model}. Valid options are "Default" and "Turbo".`);
-  }
+  const modelId = getModelId(model);
 
   try {
     const messageId = generateUUID();
@@ -71,8 +63,19 @@ export async function sendPostRequest(
       }),
     });
 
-    if (response.status !== 200) {
-      throw new Error(`Request failed with status code ${response.status}: ${await response.text()}`);
+    switch (response.status) {
+      case 200:
+        break;
+      case 400:
+        throw new Error("Bad Request");
+      case 401:
+        throw new Error("Unauthorized");
+      default:
+        throw new Error(
+          `Request failed with status code ${
+            response.status
+          }: ${await response.text()}`
+        );
     }
 
     const reader = response.body!.getReader();
