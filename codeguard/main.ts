@@ -1,8 +1,14 @@
 import * as core from "@actions/core";
 import { Octokit } from "@octokit/action";
 import { sendPostRequest } from "../src";
-import { getRawFileContent, postCommentToPR } from "./client";
-import { addLineNumbers } from "./utils";
+import { addCommentToPR, getRawFileContent, postCommentToPR } from "./client";
+import { promptForJson, promptForText } from "./prompt";
+import {
+  addLineNumbers,
+  extractCommitHash,
+  getChangedLineNumbers,
+  isSuggestions,
+} from "./utils";
 
 const octokit = new Octokit();
 const extensions = ["ts", "tsx"];
@@ -23,21 +29,50 @@ async function run(): Promise<void> {
       if (extensions.includes(extension)) {
         const text = await getRawFileContent(file.raw_url);
         const textWithLineNumber = addLineNumbers(text!);
-        const response = await sendPostRequest({
-          prompt: `Act as a code guard that has deep knowledge of frontend software development, you will review the pull request files change below for a project is written in Typescript. Always start your suggestions with 'As a codeguard, here are my suggestions' and mention file name. Please provide suggestions for making the code more readable, maintainable and secure, mentioning line numbers with each suggestion and only provide suggestions and one line code snippets corresponding to those lines of suggestion:
-          ${file.filename}
-          \`\`\`ts
-          ${textWithLineNumber}
-          \`\`\``,
-        });
+        if (process.env.CODEGUARD_COMMENT_BY_LINE) {
+          const response = await sendPostRequest({
+            prompt: promptForJson(textWithLineNumber),
+          });
+          const suggestions = JSON.parse(response.message.content.parts[0]);
+          if (!isSuggestions(suggestions)) {
+            throw new Error("ChatGPT response is not of type Suggestions");
+          }
+          const changedLines = getChangedLineNumbers(file.patch);
+          for (const line in suggestions) {
+            if (
+              changedLines.find(
+                ({ start, end }) => start <= Number(line) && Number(line) <= end
+              )
+            ) {
+              await addCommentToPR(
+                owner,
+                repo,
+                pullNumber,
+                file.filename,
+                `
+                ## Code Suggestions
+                **Suggestion:** ${suggestions[line].suggestion}
+                **Reason:** ${suggestions[line].reason}\n
+                `,
+                extractCommitHash(file.raw_url)!,
+                +line,
+                octokit
+              );
+            }
+          }
+        } else {
+          const response = await sendPostRequest({
+            prompt: promptForText(file.filename, textWithLineNumber),
+          });
 
-        await postCommentToPR(
-          owner,
-          repo,
-          pullNumber,
-          response.message.content.parts[0],
-          octokit
-        );
+          await postCommentToPR(
+            owner,
+            repo,
+            pullNumber,
+            response.message.content.parts[0],
+            octokit
+          );
+        }
       }
     }
   } catch (error) {

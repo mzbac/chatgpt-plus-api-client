@@ -5,21 +5,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: install packages
-      run: npm i
+      - name: install packages
+        run: npm i
 
-    - name: chatgpt review PR
-      run: npx tsx ./codeguard/main.ts
-      env:
+      - name: chatgpt review PR
+        run: npx tsx ./codeguard/main.ts
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_NUMBER: ${{ github.event.pull_request.number }}
           CHATGPT_COOKIES: ${{ secrets.CHATGPT_COOKIES }}
           CHATGPT_AUTH_TOKEN: ${{ secrets.CHATGPT_AUTH_TOKEN }}
+          CODEGUARD_COMMENT_BY_LINE: true
