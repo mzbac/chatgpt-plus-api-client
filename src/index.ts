@@ -43,8 +43,9 @@ export async function sendPostRequest(
   } = options;
 
   const modelId = MODEL_ID_MAP[model];
+
   if (!modelId) {
-    throw new Error(`Invalid model option: ${model}`);
+    throw new Error(`Invalid model option: ${model}. Valid options are "Default" and "Turbo".`);
   }
 
   try {
@@ -71,7 +72,7 @@ export async function sendPostRequest(
     });
 
     if (response.status !== 200) {
-      throw new Error(`Request failed with status code: ${response.status}`);
+      throw new Error(`Request failed with status code ${response.status}: ${await response.text()}`);
     }
 
     const reader = response.body!.getReader();
