@@ -45,6 +45,24 @@ talk();
 
 Before using the API client, you must set the CHATGPT_COOKIES and CHATGPT_AUTH_TOKEN environment variables. These values can be obtained by manually copying the cookies and authentication token from your browser requests.
 
+By default, the API client uses the Default model. There are 2 available models to choose from:
+
+- `Default`
+- `Turbo`
+
+To choose a different model, simply pass in the model option in the sendPostRequest function, like so:
+
+```ts
+async function talk() {
+  const response = await sendPostRequest({
+    prompt: "for loop in js?",
+    model: "Turbo",
+  });
+  console.log(response.message.content.parts[0]);
+}
+talk();
+```
+
 ## Contributing
 
 We welcome contributions to this project! If you have an idea for a new feature or a bug fix, please open a pull request.
