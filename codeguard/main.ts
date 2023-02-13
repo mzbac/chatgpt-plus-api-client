@@ -24,10 +24,11 @@ async function run(): Promise<void> {
         const text = await getRawFileContent(file.raw_url);
         const textWithLineNumber = addLineNumbers(text!);
         const response = await sendPostRequest({
-          prompt: `Act as a code guard that has deep knowledge of frontend software development, you will review the pull request files change below for a project is written in Typescript. Always start your suggestions with 'As a codeguard, here are my suggestions'. Please provide suggestions for making the code more readable, maintainable and secure, mentioning line numbers with each suggestion and only provide suggestions and one line code snippets corresponding to those lines of suggestion:
-                        \`\`\`ts
-                        ${textWithLineNumber}
-                        \`\`\``,
+          prompt: `Act as a code guard that has deep knowledge of frontend software development, you will review the pull request files change below for a project is written in Typescript. Always start your suggestions with 'As a codeguard, here are my suggestions' and mention file name. Please provide suggestions for making the code more readable, maintainable and secure, mentioning line numbers with each suggestion and only provide suggestions and one line code snippets corresponding to those lines of suggestion:
+          ${file.filename}
+          \`\`\`ts
+          ${textWithLineNumber}
+          \`\`\``,
         });
 
         await postCommentToPR(
