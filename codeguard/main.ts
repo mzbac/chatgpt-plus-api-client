@@ -50,9 +50,9 @@ async function run(): Promise<void> {
                 pullNumber,
                 file.filename,
                 `
-                ## Code Suggestions
-                **Suggestion:** ${suggestions[line].suggestion}
-                **Reason:** ${suggestions[line].reason}\n
+## Code Suggestions
+**Suggestion:** ${suggestions[line].suggestion}
+**Reason:** ${suggestions[line].reason}\n
                 `,
                 extractCommitHash(file.raw_url)!,
                 +line,
