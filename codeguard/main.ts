@@ -50,7 +50,7 @@ async function run(): Promise<void> {
                 pullNumber,
                 file.filename,
                 `
-## Code Suggestions
+## CodeGuard Suggestions
 **Suggestion:** ${suggestions[line].suggestion}
 **Reason:** ${suggestions[line].reason}\n
                 `,
