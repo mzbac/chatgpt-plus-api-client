@@ -48,7 +48,7 @@ export type Suggestions = {
 };
 
 export function isSuggestions(obj: any): obj is Suggestions {
-  if (typeof obj !== "object") {
+  if (typeof obj === 'object' && obj !== null) {
     return false;
   }
 

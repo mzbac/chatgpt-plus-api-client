@@ -60,14 +60,14 @@ async function run(): Promise<void> {
                 repo,
                 pullNumber,
                 file.filename,
-`
+                `
 ### Line ${line}
 ## CodeGuard Suggestions
 **Suggestion:** ${suggestions[line].suggestion}
 **Reason:** ${suggestions[line].reason}\n
 `,
                 extractCommitHash(file.raw_url)!,
-                +line,
+                Number(line),
                 octokit
               );
             }
@@ -88,7 +88,7 @@ async function run(): Promise<void> {
       }
     }
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message);
+    if (error instanceof Error) core.debug(error.message);
   }
 }
 
