@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import { generateUUID } from "./uuid";
 import { ChatGPTResponse } from "./chatgpt";
+import { getModelId } from "./utils";
 
 dotenv.config();
 
 const API_ENDPOINT = "https://chat.openai.com/backend-api/conversation";
-const MODEL = "text-davinci-002-render-paid";
 const HEADERS = {
   "Content-Type": "application/json",
   Accept: "text/event-stream",
@@ -13,15 +13,13 @@ const HEADERS = {
   Authorization: process.env.CHATGPT_AUTH_TOKEN ?? "",
 };
 
+export type ModelOption = "Default" | "Turbo";
+
 type SendPostRequestOptions = {
   parentMessageId?: string;
   conversationId?: string;
   prompt?: string;
-};
-
-const DEFAULT_OPTIONS: SendPostRequestOptions = {
-  parentMessageId: generateUUID(),
-  prompt: "hello world",
+  model?: ModelOption;
 };
 
 /**
@@ -31,12 +29,16 @@ const DEFAULT_OPTIONS: SendPostRequestOptions = {
  * @returns A Promise that resolves to a ChatGPTResponse object.
  */
 export async function sendPostRequest(
-  options: SendPostRequestOptions = DEFAULT_OPTIONS
+  options: SendPostRequestOptions = {}
 ): Promise<ChatGPTResponse> {
-  const { parentMessageId, conversationId, prompt } = {
-    ...DEFAULT_OPTIONS,
-    ...options,
-  };
+  const {
+    parentMessageId = generateUUID(),
+    conversationId,
+    prompt = "hello world",
+    model = "Default",
+  } = options;
+
+  const modelId = getModelId(model);
 
   try {
     const messageId = generateUUID();
@@ -57,9 +59,24 @@ export async function sendPostRequest(
         ],
         parent_message_id: parentMessageId,
         conversation_id: conversationId,
-        model: MODEL,
+        model: modelId,
       }),
     });
+
+    switch (response.status) {
+      case 200:
+        break;
+      case 400:
+        throw new Error("Bad Request");
+      case 401:
+        throw new Error("Unauthorized");
+      default:
+        throw new Error(
+          `Request failed with status code ${
+            response.status
+          }: ${await response.text()}`
+        );
+    }
 
     const reader = response.body!.getReader();
     const decoder = new TextDecoder();
