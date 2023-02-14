@@ -1,14 +1,16 @@
 import * as core from "@actions/core";
 import { Octokit } from "@octokit/action";
 import { sendPostRequest } from "../src";
-import { addCommentToPR, getRawFileContent, postCommentToPR } from "./client";
-import { promptForJson, promptForText } from "./prompt";
+import {
+  getRawFileContent,
+  postCommentToPR,
+  processSuggestions,
+} from "./client";
+import { getSuggestions } from "./chatgptClient";
+import { promptForText } from "./prompt";
 import {
   addLineNumbers,
-  extractCommitHash,
-  fixMultiLineSuggestions,
-  getChangedLineNumbers,
-  isSuggestions,
+  validateSuggestions,
 } from "./utils";
 
 const octokit = new Octokit();
@@ -31,49 +33,18 @@ async function run(): Promise<void> {
         const text = await getRawFileContent(file.raw_url);
         const textWithLineNumber = addLineNumbers(text!);
         if (process.env.CODEGUARD_COMMENT_BY_LINE) {
-          const response = await sendPostRequest({
-            prompt: promptForJson(textWithLineNumber),
-          });
-          let suggestions;
-          try {
-            suggestions = JSON.parse(response.message.content.parts[0]);
-          } catch (err) {
-            throw new Error(
-              `ChatGPT response is not a valid json:\n ${response.message.content.parts[0]}`
-            );
-          }
+          const suggestions = await getSuggestions(textWithLineNumber);
 
-          if (!isSuggestions(fixMultiLineSuggestions(suggestions))) {
-            throw new Error(
-              `ChatGPT response is not of type Suggestions\n${JSON.stringify(
-                suggestions
-              )}`
-            );
-          }
-          const changedLines = getChangedLineNumbers(file.patch);
-          for (const line in suggestions) {
-            if (
-              changedLines.some(
-                ({ start, end }) => start <= Number(line) && Number(line) <= end
-              )
-            ) {
-              await addCommentToPR(
-                owner,
-                repo,
-                pullNumber,
-                file.filename,
-                `
-### Line ${line}
-## CodeGuard Suggestions
-**Suggestion:** ${suggestions[line].suggestion}
-**Reason:** ${suggestions[line].reason}\n
-`,
-                extractCommitHash(file.raw_url)!,
-                Number(line),
-                octokit
-              );
-            }
-          }
+          validateSuggestions(suggestions);
+
+          await processSuggestions(
+            file,
+            suggestions,
+            owner,
+            repo,
+            pullNumber,
+            octokit
+          );
         } else {
           const response = await sendPostRequest({
             prompt: promptForText(file.filename, textWithLineNumber),
