@@ -73,3 +73,14 @@ export function isSuggestions(obj: any): obj is Suggestions {
 
   return true;
 }
+
+export function fixMultiLineSuggestions(suggestions: Suggestions): Record<string, Suggestion> {
+  const fixedSuggestions: Record<string, Suggestion> = {};
+
+  for (const [key, suggestion] of Object.entries(suggestions)) {
+    const index = key.includes("-") ? Number(key.split("-")[0]) : Number(key);
+    fixedSuggestions[index] = suggestion;
+  }
+
+  return fixedSuggestions;
+}

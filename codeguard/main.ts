@@ -6,6 +6,7 @@ import { promptForJson, promptForText } from "./prompt";
 import {
   addLineNumbers,
   extractCommitHash,
+  fixMultiLineSuggestions,
   getChangedLineNumbers,
   isSuggestions,
 } from "./utils";
@@ -41,7 +42,8 @@ async function run(): Promise<void> {
               `ChatGPT response is not a valid json:\n ${response.message.content.parts[0]}`
             );
           }
-          if (!isSuggestions(suggestions)) {
+
+          if (!isSuggestions(fixMultiLineSuggestions(suggestions))) {
             throw new Error(
               `ChatGPT response is not of type Suggestions\n${JSON.stringify(
                 suggestions
