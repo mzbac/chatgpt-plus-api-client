@@ -13,7 +13,7 @@ const HEADERS = {
   Authorization: process.env.CHATGPT_AUTH_TOKEN ?? "",
 };
 
-export type ModelOption = "Default" | "Turbo";
+export type ModelOption = "Default" | "Legacy";
 
 type SendPostRequestOptions = {
   parentMessageId?: string;
