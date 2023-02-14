@@ -12,7 +12,7 @@ export function getModelId(model: ModelOption): MODEL {
 
   if (!modelId) {
     throw new Error(
-      `Invalid model option: ${model}. Valid options are "Default" and "Turbo".`
+      `Invalid model option: ${model}. Valid options are "Default" and "Legacy".`
     );
   }
   return modelId;
