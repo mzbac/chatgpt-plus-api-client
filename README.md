@@ -46,7 +46,7 @@ talk();
 By default, the API client uses the Default model. There are 2 available models to choose from:
 
 - `Default`
-- `Turbo`
+- `Legacy`
 
 To choose a different model, simply pass in the model option in the sendPostRequest function, like so:
 
@@ -54,7 +54,7 @@ To choose a different model, simply pass in the model option in the sendPostRequ
 async function talk() {
   const response = await sendPostRequest({
     prompt: "for loop in js?",
-    model: "Turbo",
+    model: "Legacy",
   });
   console.log(response.message.content.parts[0]);
 }

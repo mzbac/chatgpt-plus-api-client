@@ -3,7 +3,7 @@ import { ModelOption } from ".";
 type MODEL = "text-davinci-002-render-paid" | "text-davinci-002-render-sha";
 
 const MODEL_ID_MAP: { [key in ModelOption]: MODEL } = {
-  Turbo: "text-davinci-002-render-paid",
+  Legacy: "text-davinci-002-render-paid",
   Default: "text-davinci-002-render-sha",
 };
 
