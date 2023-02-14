@@ -84,3 +84,13 @@ export function fixMultiLineSuggestions(suggestions: Suggestions): Record<string
 
   return fixedSuggestions;
 }
+
+export function validateSuggestions(suggestions: Suggestions) {
+  if (!isSuggestions(fixMultiLineSuggestions(suggestions))) {
+    throw new Error(
+      `ChatGPT response is not of type Suggestions\n${JSON.stringify(
+        suggestions
+      )}`
+    );
+  }
+}

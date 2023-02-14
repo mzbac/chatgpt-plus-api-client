@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import { Octokit } from "@octokit/action";
+import { getChangedLineNumbers, extractCommitHash, Suggestions } from "./utils";
 
 export async function getRawFileContent(
   url: string
@@ -20,7 +21,7 @@ export async function addCommentToPR(
   filePath: string,
   comment: string,
   commitId: string,
-  line:number,
+  line: number,
   octokit: Octokit
 ): Promise<void> {
   try {
@@ -62,5 +63,52 @@ export async function postCommentToPR(
     console.log(`Comment posted successfully: ${result.data.html_url}`);
   } catch (error) {
     console.error(`Failed to post comment: ${error}`);
+  }
+}
+
+export type GitFile = {
+  sha: string;
+  filename: string;
+  status: string;
+  additions: number;
+  deletions: number;
+  changes: number;
+  blob_url: string;
+  raw_url: string;
+  contents_url: string;
+  patch: string;
+};
+
+export async function processSuggestions(
+  file: GitFile,
+  suggestions: Suggestions,
+  owner: string,
+  repo: string,
+  pullNumber: number,
+  octokit: Octokit
+) {
+  const changedLines = getChangedLineNumbers(file.patch);
+  for (const line in suggestions) {
+    if (
+      changedLines.some(
+        ({ start, end }) => start <= Number(line) && Number(line) <= end
+      )
+    ) {
+      await addCommentToPR(
+        owner,
+        repo,
+        pullNumber,
+        file.filename,
+        `
+### Line ${line}
+## CodeGuard Suggestions
+**Suggestion:** ${suggestions[line].suggestion}
+**Reason:** ${suggestions[line].reason}\n
+`,
+        extractCommitHash(file.raw_url)!,
+        Number(line),
+        octokit
+      );
+    }
   }
 }
