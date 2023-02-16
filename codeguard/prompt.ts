@@ -17,6 +17,6 @@ export function promptForJson(
     \`\`\`ts
     ${sourceCodeWithLineNumber}
     \`\`\`
-    Provide suggestions when necessary to make the code more readable, maintainable, and secure for ${linesToReview}. Reply only in the form of a JSON string, property keys should use line numbers as their values and values should be an object containing your suggestion and reason without any code blocks.  there is no need to add additional text.
+    Provide suggestions when necessary to make the code more readable, maintainable, and secure for ${linesToReview}. Reply a pure JSON string, property keys should use line numbers as their values and values should be an object containing your suggestion and reason without any code blocks. there is no need to add additional explanation.
     `;
 }
