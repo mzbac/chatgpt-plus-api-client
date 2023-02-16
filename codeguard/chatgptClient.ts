@@ -1,6 +1,5 @@
 import { sendPostRequest } from "../src";
 import { promptForJson } from "./prompt";
-import { extractJsonString } from "./utils";
 
 export async function getSuggestions(
   textWithLineNumber: string,
@@ -15,9 +14,7 @@ export async function getSuggestions(
 
   let suggestions;
   try {
-    suggestions = JSON.parse(
-      extractJsonString(response.message.content.parts[0])
-    );
+    suggestions = JSON.parse(response.message.content.parts[0]);
   } catch (err) {
     throw new Error(
       `ChatGPT response is not a valid json:\n ${response.message.content.parts[0]}`

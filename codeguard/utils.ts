@@ -94,9 +94,3 @@ export function validateSuggestions(suggestions: Suggestions) {
     );
   }
 }
-
-export function extractJsonString(str) {
-  const regex = /{.*?}/;
-  const jsonString = str.match(regex)[0];
-  return jsonString;
-}
