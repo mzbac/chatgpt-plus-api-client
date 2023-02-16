@@ -89,26 +89,20 @@ export async function processSuggestions(
   changedLines: { start: number; end: number }[]
 ) {
   for (const line in suggestions) {
-    if (
-      changedLines.some(
-        ({ start, end }) => start <= Number(line) && Number(line) <= end
-      )
-    ) {
-      await addCommentToPR(
-        owner,
-        repo,
-        pullNumber,
-        file.filename,
-        `
+    await addCommentToPR(
+      owner,
+      repo,
+      pullNumber,
+      file.filename,
+      `
 ### Line ${line}
 ## CodeGuard Suggestions
 **Suggestion:** ${suggestions[line].suggestion}
 **Reason:** ${suggestions[line].reason}\n
 `,
-        extractCommitHash(file.raw_url)!,
-        Number(line),
-        octokit
-      );
-    }
+      extractCommitHash(file.raw_url)!,
+      Number(line),
+      octokit
+    );
   }
 }
