@@ -9,9 +9,14 @@ export function promptForText(
     \`\`\``;
 }
 
-export function promptForJson(sourceCodeWithLineNumber: string): string {
-  return `Act as a code guard that has deep knowledge of software development, you will review the pull request files change below for a project is written in Typescript. Please provide suggestions for making the code more readable,maintainable and secure in the format of a json object, property key of the json object uses the line number as key value and value of the property is the suggestion and reason without any code block. please only reply the json object, not no additional text.
+export function promptForJson(
+  sourceCodeWithLineNumber: string,
+  linesToReview: string
+): string {
+  return `Act as a code guard with deep knowledge of frontend software development, review the code below for a project written in TypeScript.
     \`\`\`ts
     ${sourceCodeWithLineNumber}
-    \`\`\``;
+    \`\`\`
+    Provide suggestions when necessary to make the code more readable, maintainable, and secure for ${linesToReview} in the form of a JSON object; property keys should use line numbers as their values and values should be an object containing your suggestion and reason without any code blocks. Reply only with this JSON object; there is no need to add additional text.
+    `;
 }
