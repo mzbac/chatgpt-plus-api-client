@@ -10,6 +10,7 @@ export async function getSuggestions(
       textWithLineNumber,
       linesToReview.map(({ start, end }) => `line ${start}-${end}`).join(",")
     ),
+    model:'Legacy'
   });
 
   let suggestions;
