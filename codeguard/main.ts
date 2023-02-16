@@ -10,6 +10,7 @@ import { getSuggestions } from "./chatgptClient";
 import { promptForText } from "./prompt";
 import {
   addLineNumbers,
+  getChangedLineNumbers,
   validateSuggestions,
 } from "./utils";
 
@@ -33,7 +34,12 @@ async function run(): Promise<void> {
         const text = await getRawFileContent(file.raw_url);
         const textWithLineNumber = addLineNumbers(text!);
         if (process.env.CODEGUARD_COMMENT_BY_LINE) {
-          const suggestions = await getSuggestions(textWithLineNumber);
+          const changedLines = getChangedLineNumbers(file.patch);
+
+          const suggestions = await getSuggestions(
+            textWithLineNumber,
+            changedLines
+          );
 
           validateSuggestions(suggestions);
 
@@ -43,7 +49,8 @@ async function run(): Promise<void> {
             owner,
             repo,
             pullNumber,
-            octokit
+            octokit,
+            changedLines
           );
         } else {
           const response = await sendPostRequest({

@@ -85,9 +85,9 @@ export async function processSuggestions(
   owner: string,
   repo: string,
   pullNumber: number,
-  octokit: Octokit
+  octokit: Octokit,
+  changedLines: { start: number; end: number }[]
 ) {
-  const changedLines = getChangedLineNumbers(file.patch);
   for (const line in suggestions) {
     if (
       changedLines.some(
