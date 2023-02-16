@@ -13,7 +13,7 @@ export function promptForJson(
   sourceCodeWithLineNumber: string,
   linesToReview: string
 ): string {
-  return `Act as a code guard with deep knowledge of frontend software development, review the code below for a project written in TypeScript.
+  return `Act as a code guard with deep knowledge of frontend software development, read through the code below for a project written in TypeScript.
     \`\`\`ts
     ${sourceCodeWithLineNumber}
     \`\`\`
