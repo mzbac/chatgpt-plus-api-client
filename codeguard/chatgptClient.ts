@@ -1,9 +1,11 @@
 import { sendPostRequest } from "../src";
 import { promptForJson } from "./prompt";
 
+type LinesToReview = { start: number; end: number }[];
+
 export async function getSuggestions(
   textWithLineNumber: string,
-  linesToReview: { start: number; end: number }[]
+  linesToReview: LinesToReview
 ) {
   const response = await sendPostRequest({
     prompt: promptForJson(
@@ -13,13 +15,14 @@ export async function getSuggestions(
     model: "Legacy",
   });
 
-  const str = response.message.content.parts[0];
-  const startIndex = str.indexOf("{");
-  const endIndex = str.lastIndexOf("}");
-  let json;
-  if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-    json = str.substring(startIndex, endIndex + 1);
-  }
+  // extract the json from the response
+  const result = response?.message?.content?.parts[0] ?? "";
+  const startIndex = result.indexOf("{");
+  const endIndex = result.lastIndexOf("}");
+  const json =
+    startIndex !== -1 && endIndex !== -1 && endIndex > startIndex
+      ? result.substring(startIndex, endIndex + 1)
+      : "";
 
   let suggestions;
   try {
