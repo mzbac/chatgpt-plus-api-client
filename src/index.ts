@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { generateUUID } from "./uuid";
+import { randomUUID } from "crypto";
 import { ChatGPTResponse } from "./chatgpt";
 import { getModelId } from "./utils";
 
@@ -32,7 +32,7 @@ export async function sendPostRequest(
   options: SendPostRequestOptions = {}
 ): Promise<ChatGPTResponse> {
   const {
-    parentMessageId = generateUUID(),
+    parentMessageId = randomUUID(),
     conversationId,
     prompt = "hello world",
     model = "Default",
@@ -41,7 +41,7 @@ export async function sendPostRequest(
   const modelId = getModelId(model);
 
   try {
-    const messageId = generateUUID();
+    const messageId = randomUUID();
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: HEADERS,
