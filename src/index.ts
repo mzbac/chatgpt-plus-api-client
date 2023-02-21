@@ -29,7 +29,8 @@ type SendPostRequestOptions = {
  * @returns A Promise that resolves to a ChatGPTResponse object.
  */
 export async function sendPostRequest(
-  options: SendPostRequestOptions = {}
+  options: SendPostRequestOptions = {},
+  header = {}
 ): Promise<ChatGPTResponse> {
   const {
     parentMessageId = randomUUID(),
@@ -44,7 +45,7 @@ export async function sendPostRequest(
     const messageId = randomUUID();
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
-      headers: HEADERS,
+      headers: { ...HEADERS, ...header },
       body: JSON.stringify({
         action: "next",
         messages: [
