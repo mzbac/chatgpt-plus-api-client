@@ -69,14 +69,10 @@ Before using the API client, you must set the CHATGPT_COOKIES and CHATGPT_AUTH_T
 2. Press F12 or right-click anywhere on the page and select "Inspect" from the context menu to open the Developer Tools.
 3. Click on the "Application" tab in the Developer Tools.
 4. In the left sidebar, expand the "Cookies" section and select the domain for the website you are working with.
-5. You should see the list of cookies for the selected domain. Look for the following cookies:
-   - __Host-next-auth.csrf-token
-   - __Secure-next-auth.session-token
+5. You should see the list of cookies for the selected domain. Look for the following cookie:
    - _puid
-6. For each of the above cookies, copy the value of the "Value" field.
-7. Combine the cookie values into a single string, separating each cookie with a semicolon and a space. The resulting string should look like this:
-   __Host-next-auth.csrf-token=[value];__Secure-next-auth.session-token=[value]; _puid=[value]
-8. Set the value of the CHATGPT_COOKIES environment variable to the string you just created.
+6. Copy the value of the "Value" field for the `_puid` cookie.
+7. Set the value of the `CHATGPT_COOKIES` environment variable to the string `_puid=[value]`.
 
 Note that these steps are specific to Google Chrome. If you are using a different web browser, the process for retrieving cookies may be slightly different.
 
