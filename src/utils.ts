@@ -1,10 +1,14 @@
 import { ModelOption } from ".";
 
-type MODEL = "text-davinci-002-render-paid" | "text-davinci-002-render-sha";
+type MODEL =
+  | "text-davinci-002-render-paid"
+  | "text-davinci-002-render-sha"
+  | "gpt-4";
 
 const MODEL_ID_MAP: { [key in ModelOption]: MODEL } = {
   Legacy: "text-davinci-002-render-paid",
   Default: "text-davinci-002-render-sha",
+  "gpt-4": "gpt-4",
 };
 
 export function getModelId(model: ModelOption): MODEL {

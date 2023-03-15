@@ -43,10 +43,11 @@ async function talk() {
 talk();
 ```
 
-By default, the API client uses the Default model. There are 2 available models to choose from:
+By default, the API client uses the Default model. There are 3 available models to choose from:
 
 - `Default`
 - `Legacy`
+- `gpt-4`
 
 To choose a different model, simply pass in the model option in the sendPostRequest function, like so:
 
@@ -55,6 +56,18 @@ async function talk() {
   const response = await sendPostRequest({
     prompt: "for loop in js?",
     model: "Legacy",
+  });
+  console.log(response.message.content.parts[0]);
+}
+talk();
+```
+
+```ts
+async function talk() {
+  const response = await sendPostRequest({
+    prompt: `[Text from :https://medium.com/@anchen.li/creating-custom-shortcuts-on-your-mac-to-check-grammar-using-chatgpt-809c78715eda]
+    What is the article about?`,
+    model: "gpt-4",
   });
   console.log(response.message.content.parts[0]);
 }
